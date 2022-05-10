@@ -120,7 +120,8 @@
 
 
 loader_kaimada.load( 'Kaimada.glb', function ( kaimada ) {
-							kaimada.scene.position.set(0,0,-100);
+							kaimada.scene.position.set(-250,0,-50);
+							kaimada.scene.rotation.y=-2.0;
 							kaimada.scene.scale.set( 30.0, 30.0, 30.0 );
 							scene.add( kaimada.scene );
 							//objects.push(kaimada.scene);
@@ -417,26 +418,28 @@ loader_map.load( 'Map.glb', function ( map ) {
 
 				
 
-				for ( let i = 0; i < 32; i ++ ) {
+				for ( let i = 0,v=0.5; i < 32; i ++,v-=0.5 ) {
 
 					const box = new THREE.Mesh( boxGeometry);
 					/*box.position.x = Math.floor( Math.random() * 20 - 10 ) * 20;
 					box.position.y = Math.floor( Math.random() * 20 ) * 20 + 10;
 					box.position.z = Math.floor( Math.random() * 20 - 10 ) * 20;*/
 
-					box.position.x=0;
+					box.position.x=(0+i)-(305);
 				box.position.y=(0+i)-17;
-				box.position.z=-40-i;
-				//box.rotation.y=0;
+				box.position.z=-130-v-(-50);
+				box.rotation.y=0;
 
 					scene.add( box );
 					objects.push( box );
 
 				} //Random Boxes Added
 				const box = new THREE.Mesh( boxGeometry);
-				box.position.x=0;
+				box.position.x=0-(250);
 				box.position.y=15;
-				box.position.z=-100;
+				box.position.z=-100-(-50);
+				box.rotation.y=1.1;
+
 				box.scale.set(5,1,5);
 				scene.add( box );
 					objects.push( box );
