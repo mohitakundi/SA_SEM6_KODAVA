@@ -165,7 +165,7 @@ loader_cube.load( 'Singing.glb', function ( cube ) {
 							//scene.remove( coorgsat.scene );
 							render();
 						} );
-loader_map.load( 'Map.glb', function ( map ) {
+loader_map.load( 'MapBig.glb', function ( map ) {
 	mapobj=map;
 							map.scene.position.set(100,0.1,70);
 							map.scene.scale.set( 240.0, 240.0, 240.0);
@@ -391,7 +391,7 @@ loader_map.load( 'Map.glb', function ( map ) {
 
 //Adding Wood Floor Texture
 
-				const floorTexture = new THREE.TextureLoader().load( 'textures/hardwood2_diffuse.jpg' );
+				const floorTexture = new THREE.TextureLoader().load( 'textures/TexturesCom_Gravel0161_M.jpg' );
 				floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
 				floorTexture.repeat.set(20, 20);
 				const floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture});
