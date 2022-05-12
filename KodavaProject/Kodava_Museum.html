@@ -29,6 +29,31 @@
 		</style>
 	</head>
 	<body>
+
+
+			<video
+			id="video"
+			playsinline
+			webkit-playsinline
+			muted
+			loop
+			autoplay
+			width="640"
+			height="360"
+			src="videos/ainmane.mp4"
+			style="display:none"
+			
+			
+			
+			></video>
+
+
+
+
+
+
+
+
 		<div id="blocker">
 			<div id="instructions">
 				<p style="font-size:36px">
@@ -39,7 +64,7 @@
 					Jump: SPACE<br/><br>
 					Scale Map Bigger: O<br/>
 					Scale Map Bigger: L<br/><br>
-					Rotate Object:R<br><br>
+					Rotate Map:R<br><br>
 					Look Around: MOUSE<br><br><br>
 					Music: "Kaal_kodikondu_Bava"<br><br><br><br>
 					TIP ! <br>
@@ -97,6 +122,8 @@
 			const loader_map = new GLTFLoader().setPath( 'models/gltf/' );
 			
 
+			let videoTexture;
+
 			let coorgsatobj;
 			let kaimadaobj;
 			let kallbottiobj;
@@ -112,6 +139,27 @@
 			const direction = new THREE.Vector3();
 			const vertex = new THREE.Vector3();
 			const color = new THREE.Color();
+
+
+
+
+
+			let video=document.getElementById("video");
+videoTexture=new THREE.VideoTexture(video);
+videoTexture.minFilter = THREE.LinearFilter;
+videoTexture.magFilter = THREE.LinearFilter;
+
+
+var movieMaterial= new THREE.MeshBasicMaterial({
+
+map: videoTexture,
+side: THREE.FrontSide,
+toneMapped: false,
+
+});
+
+let StageGeometry = new THREE.BoxGeometry( 20, 30, 40);
+
 
 			init();
 			animate();
@@ -131,9 +179,10 @@ loader_kaimada.load( 'Kaimada.glb', function ( kaimada ) {
 
 						
 loader_kallbotti.load( 'Kallbotti.glb', function ( kallbotti ) {
-							kallbotti.scene.position.set(0,0,-15);
+							kallbotti.scene.position.set(0,0,-25);
 							kallbotti.scene.scale.set( 10.0, 10.0, 10.0 );
-							scene.add( kallbotti.scene );
+							kallbotti.scene.rotation.y=1.1;
+							//scene.add( kallbotti.scene );
 							//objects.push(kallbotti.scene);
 							render();
 						} );
@@ -141,10 +190,10 @@ loader_kallbotti.load( 'Kallbotti.glb', function ( kallbotti ) {
 						
 loader_coorgsat.load( 'CoorgSat.glb', function ( coorgsat ) {
 	coorgsatobj=coorgsat;
-							coorgsat.scene.position.set(0,10,-10);
+							coorgsat.scene.position.set(-18,10,-30);
 							coorgsat.scene.scale.set( 4.0, 4.0, 4.0);
 							//coorgsat.scene.rotateY(20.5);
-							coorgsat.scene.rotation.y=1.6;
+							coorgsat.scene.rotation.y=1.1;
 							scene.add( coorgsat.scene );
 							
 							//scene.remove( coorgsat.scene );
@@ -152,7 +201,7 @@ loader_coorgsat.load( 'CoorgSat.glb', function ( coorgsat ) {
 						} );
 loader_cube.load( 'Singing.glb', function ( cube ) {
 	cubeobj=cube;
-							cube.scene.position.set(15,0,-40);
+							cube.scene.position.set(15,15,-40);
 							cube.scene.scale.set( 8.0, 8.0, 8.0);
 							//coorgsat.scene.rotateY(20.5);
 							cube.scene.rotation.y=0;
@@ -187,10 +236,11 @@ loader_map.load( 'MapBig.glb', function ( map ) {
 
 
 
-			function init() {
+			function init() {video.play();
 
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
 				camera.position.y = 10;
+				//camera.rotation.y=1.2;
 
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0xffffff );
@@ -293,11 +343,11 @@ loader_map.load( 'MapBig.glb', function ( map ) {
 							deformer();
 							break;
 						case 'KeyO':
-							scaler++;
+							if(scaler<5)scaler++;
 							deformer();
 							break;
 						case 'KeyL':
-							scaler--;
+							if(scaler>1)scaler--;
 							deformer();
 							break;
 					}
@@ -396,7 +446,13 @@ loader_map.load( 'MapBig.glb', function ( map ) {
 				floorTexture.repeat.set(20, 20);
 				const floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture});
 				const floor = new THREE.Mesh( floorGeometry, floorMaterial );
-							
+//---------------------------------------------------------------------------		
+	
+//Adding Video Material
+
+
+
+
 
 //---------------------------------------------------------------------------
 				//const floorMaterial = new THREE.MeshBasicMaterial( { vertexColors: true } );
@@ -409,10 +465,14 @@ loader_map.load( 'MapBig.glb', function ( map ) {
 				const boxGeometry = new THREE.BoxGeometry( 10, 5, 10 ).toNonIndexed();
 				const nadi_planeGEO = new THREE.BoxGeometry( 80, 10, 30 ).toNonIndexed();
 				const nadi_plane2GEO = new THREE.BoxGeometry( 70, 10, 70 ).toNonIndexed();
+				
+
+
 
 				position = boxGeometry.attributes.position;
 				position = nadi_planeGEO.attributes.position;
 				position = nadi_plane2GEO.attributes.position;
+				//position = StageGeometry.attributes.position;
 
 				
 
@@ -462,6 +522,16 @@ loader_map.load( 'MapBig.glb', function ( map ) {
 				scene.add( nadi_plane2 );
 					objects.push( nadi_plane2 );
 
+					let Stage = new THREE.Mesh( StageGeometry,movieMaterial);
+				Stage.position.x=15;
+				Stage.position.y=5;
+				Stage.position.z=-40;
+				Stage.scale.set(1,.6,1);
+				Stage.rotation.y=1.1;
+				scene.add( Stage );
+					objects.push( Stage );
+					
+
 
 				/*-----------------------TRYING FOR COLLISION
 				const boxGeometry = new THREE.BoxGeometry( 10, 5, 10 ).toNonIndexed();
@@ -501,7 +571,10 @@ loader_map.load( 'MapBig.glb', function ( map ) {
 				requestAnimationFrame( animate );
 				//-------------------------------------ANIMATION------------------------------------
 				var delta = clock.getDelta();
+				
 				if ( mixer ) mixer.update( delta );
+
+				
 				//----------------------------------------------------------------------------------
 				const time = performance.now();
 
@@ -554,7 +627,7 @@ loader_map.load( 'MapBig.glb', function ( map ) {
 				}
 
 				prevTime = time;
-
+				videoTexture.needsUpdate=true;	
 				renderer.render( scene, camera );
 				
 
@@ -571,7 +644,7 @@ function loadsceneobjects()
 function deformer()
 {
 	
-	coorgsatobj.scene.rotation.y=1.6+rotater;
+	coorgsatobj.scene.rotation.y=1.1+rotater;
 	coorgsatobj.scene.scale.set(4+scaler,4+scaler,4+scaler);
 	
 }
